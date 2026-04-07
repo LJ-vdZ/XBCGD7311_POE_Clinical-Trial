@@ -12,36 +12,36 @@ public class SimplePlayerMovement : MonoBehaviour
     [SerializeField] Transform cameraTransform;
     [SerializeField] Vector3 cameraWorldOffset = new Vector3(0f, 1.6f, 0f);
 
-    CharacterController _controller;
-    float _pitch;
-    bool _cursorLocked;
+    CharacterController controller;
+    float pitch;
 
     void Awake()
     {
-        _controller = GetComponent<CharacterController>();
+        controller = GetComponent<CharacterController>();
+        SetControlsLocked(true);
     }
 
     void Start()
     {
+        SetControlsLocked(true);
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
-
-        if (lockCursor)
-            SetCursorLocked(true);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            SetCursorLocked(false);
-        if (Input.GetMouseButtonDown(0) && !_cursorLocked)
-            SetCursorLocked(true);
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //    SetCursorLocked(false);
+        //if (Input.GetMouseButtonDown(0) && !_cursorLocked)
+        //    SetCursorLocked(false);
+        if (Cursor.lockState != CursorLockMode.Locked)
+            return;
 
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         transform.Rotate(0f, mouseX, 0f);
-        _pitch = Mathf.Clamp(_pitch - mouseY, minPitch, maxPitch);
+        pitch = Mathf.Clamp(pitch - mouseY, minPitch, maxPitch);
 
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
@@ -56,7 +56,7 @@ public class SimplePlayerMovement : MonoBehaviour
 
         Vector3 delta = moveDir * moveSpeed * Time.deltaTime;
         delta.y = 0f;
-        _controller.Move(delta);
+        controller.Move(delta);
     }
 
     void LateUpdate()
@@ -66,18 +66,25 @@ public class SimplePlayerMovement : MonoBehaviour
 
         if (cameraTransform.parent == transform)
         {
-            cameraTransform.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
+            cameraTransform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
             return;
         }
 
         cameraTransform.position = transform.position + cameraWorldOffset;
-        cameraTransform.rotation = Quaternion.Euler(_pitch, transform.eulerAngles.y, 0f);
+        cameraTransform.rotation = Quaternion.Euler(pitch, transform.eulerAngles.y, 0f);
     }
 
-    void SetCursorLocked(bool locked)
+    public void SetControlsLocked(bool locked)
     {
-        _cursorLocked = locked;
-        Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
-        Cursor.visible = !locked;
+        if (locked)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 }
