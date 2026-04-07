@@ -10,6 +10,7 @@ public class MainSceneUIManager : MonoBehaviour
     public Button janitorButton;
 
     public SimplePlayerMovement playerMovement;
+    public JobSpawner jobSpawner;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,17 +22,25 @@ public class MainSceneUIManager : MonoBehaviour
     void OnNurseClicked()
     {
         Debug.Log("Nurse button clicked");
+        jobSpawner.SpawnAtRandom(LocationType.Nurse);
         playerMovement.SetControlsLocked(false);
+        JobPanel.SetActive(false);
     }
 
     void OnDoctorClicked()
     {
         Debug.Log("Doctor button clicked");
+        jobSpawner.SpawnAtRandom(LocationType.Doctor);
+        playerMovement.SetControlsLocked(false);
+        JobPanel.SetActive(false);
     }
 
     void OnJanitorClicked()
     {
         Debug.Log("Janitor button clicked");
+        jobSpawner.SpawnAtRandom(LocationType.Janitor);
+        playerMovement.SetControlsLocked(false);
+        JobPanel.SetActive(false);
     }
 
     // Update is called once per frame

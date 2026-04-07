@@ -7,7 +7,6 @@ public class SimplePlayerMovement : MonoBehaviour
     [SerializeField] float mouseSensitivity = 2f;
     [SerializeField] float minPitch = -80f;
     [SerializeField] float maxPitch = 80f;
-    [SerializeField] bool lockCursor = true;
 
     [SerializeField] Transform cameraTransform;
     [SerializeField] Vector3 cameraWorldOffset = new Vector3(0f, 1.6f, 0f);

@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 44e0d7f6325fec744b81544df0532880, type: 2}
+    - target: {fileID: 3873277783394151418, guid: 26c6f1dda1fcfe043932b5cd3484ffc5, type: 3}
+      propertyPath: jobType
+      value: Janitor
+      objectReference: {fileID: 0}
     - target: {fileID: 6075686455668662236, guid: 26c6f1dda1fcfe043932b5cd3484ffc5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.5
