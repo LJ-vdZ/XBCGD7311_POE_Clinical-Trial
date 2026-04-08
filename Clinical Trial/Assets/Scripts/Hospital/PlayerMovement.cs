@@ -17,14 +17,14 @@ public class SimplePlayerMovement : MonoBehaviour
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        SetControlsLocked(true);
+        SetControlsLocked(false);
     }
 
     void Start()
     {
-        SetControlsLocked(true);
-        if (cameraTransform == null && Camera.main != null)
-            cameraTransform = Camera.main.transform;
+        //SetControlsLocked(true);
+        //if (cameraTransform == null && Camera.main != null)
+        //    cameraTransform = Camera.main.transform;
     }
 
     void Update()
