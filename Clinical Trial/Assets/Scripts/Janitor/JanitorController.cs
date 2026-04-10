@@ -16,7 +16,7 @@ public class JanitorController : MonoBehaviour
     public TrashItem heldTrash = null;
     public bool isControlled = false;
 
-    private IJanitorInteractable currentTarget = null;
+    //private IJanitorInteractable currentTarget = null;
 
     private CharacterController cc;
     private Camera cam;
@@ -33,25 +33,25 @@ public class JanitorController : MonoBehaviour
 
         HandleMovement();
 
-        //E is general interaction (pick up, clean, repair, generator puzzle)
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (currentTarget != null)
-                currentTarget.Interact(this);
-        }
+        ////E is general interaction (pick up, clean, repair, generator puzzle)
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    if (currentTarget != null)
+        //        currentTarget.Interact(this);
+        //}
 
-        //Q is to dispose trash into bin (only when holding something)
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (heldTrash != null && currentTarget != null)
-            {
-                currentTarget.Interact(this);   //call DisposeTrash on the bin
-            }
-            else if (heldTrash != null)
-            {
-                DropTrash();                    //drop on ground if no bin
-            }
-        }
+        ////Q is to dispose trash into bin (only when holding something)
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    if (heldTrash != null && currentTarget != null)
+        //    {
+        //        currentTarget.Interact(this);   //call DisposeTrash on the bin
+        //    }
+        //    else if (heldTrash != null)
+        //    {
+        //        DropTrash();                    //drop on ground if no bin
+        //    }
+        //}
     }
 
     private void HandleMovement()
@@ -79,48 +79,48 @@ public class JanitorController : MonoBehaviour
             cc.Move(Vector3.down * 25f * Time.deltaTime);
     }
 
-    public void SetCurrentTarget(IJanitorInteractable target)
-    {
-        currentTarget = target;
-    }
+    //public void SetCurrentTarget(IJanitorInteractable target)
+    //{
+    //    currentTarget = target;
+    //}
 
-    public void ClearCurrentTarget()
-    {
-        currentTarget = null;
-    }
+    //public void ClearCurrentTarget()
+    //{
+    //    currentTarget = null;
+    //}
 
-    //Trash interactions
-    public void PickUpTrash(TrashItem trash)
-    {
-        if (heldTrash != null) return;
-        heldTrash = trash;
-        trash.transform.SetParent(attachPoint);
-        trash.transform.localPosition = Vector3.zero;
-        trash.transform.localRotation = Quaternion.identity;
-        Debug.Log($"Picked up {trash.type}");
-    }
+    ////Trash interactions
+    //public void PickUpTrash(TrashItem trash)
+    //{
+    //    if (heldTrash != null) return;
+    //    heldTrash = trash;
+    //    trash.transform.SetParent(attachPoint);
+    //    trash.transform.localPosition = Vector3.zero;
+    //    trash.transform.localRotation = Quaternion.identity;
+    //    Debug.Log($"Picked up {trash.type}");
+    //}
 
-    public void DisposeTrash(TrashType requiredType)
-    {
-        if (heldTrash == null) return;
+    //public void DisposeTrash(TrashType requiredType)
+    //{
+    //    if (heldTrash == null) return;
 
-        if (heldTrash.type == requiredType)
-            GameManager.Instance.ModifyHygiene(12f);
-        else
-            GameManager.Instance.ModifyHygiene(-20f);
+    //    if (heldTrash.type == requiredType)
+    //        GameManager.Instance.ModifyHygiene(12f);
+    //    else
+    //        GameManager.Instance.ModifyHygiene(-20f);
 
-        Destroy(heldTrash.gameObject);
-        heldTrash = null;
-        Debug.Log("Trash disposed successfully");
-    }
+    //    Destroy(heldTrash.gameObject);
+    //    heldTrash = null;
+    //    Debug.Log("Trash disposed successfully");
+    //}
 
-    private void DropTrash()
-    {
-        if (heldTrash == null) return;
-        heldTrash.transform.SetParent(null);
-        heldTrash.transform.position = transform.position + transform.forward * 1.5f;
-        heldTrash = null;
-    }
+    //private void DropTrash()
+    //{
+    //    if (heldTrash == null) return;
+    //    heldTrash.transform.SetParent(null);
+    //    heldTrash.transform.position = transform.position + transform.forward * 1.5f;
+    //    heldTrash = null;
+    //}
 
     // Paste old PlaySweepAnimation and SweepPendulum coroutine here if you want it
     // For now you can call it from DirtPile later

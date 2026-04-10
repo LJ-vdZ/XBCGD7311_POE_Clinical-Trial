@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class SimplePlayerMovement : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 6f;
+    [SerializeField] float moveSpeed = 20f;
     [SerializeField] float mouseSensitivity = 2f;
     [SerializeField] float minPitch = -80f;
     [SerializeField] float maxPitch = 80f;

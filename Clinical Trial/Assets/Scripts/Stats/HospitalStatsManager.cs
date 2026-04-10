@@ -6,10 +6,10 @@ public class HospitalStatsManager : MonoBehaviour
     public static HospitalStatsManager Instance;
 
     // Stats
-    public float sanitation = 100f;
-    public float patientRecovery = 100f;
-    public float infrastructure = 100f;
-    public float reputation = 100f;
+    public float sanitation = 50f;
+    public float comfort = 50f;
+    public float morale = 50f;
+    public int money = 1000;
 
     // Event for UI updates
     public static Action OnStatsChanged;
@@ -31,24 +31,36 @@ public class HospitalStatsManager : MonoBehaviour
         OnStatsChanged?.Invoke();
     }
 
-    public void ChangeRecovery(float amount)
+    public void ChangeComfort(float amount)
     {
-        patientRecovery += amount;
-        patientRecovery = Mathf.Clamp(patientRecovery, 0, 100);
+        comfort += amount;
+        comfort = Mathf.Clamp(comfort, 0, 100);
         OnStatsChanged?.Invoke();
     }
 
-    public void ChangeInfrastructure(float amount)
+    public void ChangeMorale(float amount)
     {
-        infrastructure += amount;
-        infrastructure = Mathf.Clamp(infrastructure, 0, 100);
+        morale += amount;
+        morale = Mathf.Clamp(morale, 0, 100);
         OnStatsChanged?.Invoke();
     }
 
-    public void ChangeReputation(float amount)
+    public bool SpendMoney(int amount)
     {
-        reputation += amount;
-        reputation = Mathf.Clamp(reputation, 0, 100);
+        if (money < amount)
+        {
+            Debug.Log("Not enough money!");
+            return false;
+        }
+
+        money -= amount;
+        OnStatsChanged?.Invoke();
+        return true;
+    }
+
+    public void AddMoney(int amount)
+    {
+        money += amount;
         OnStatsChanged?.Invoke();
     }
 }

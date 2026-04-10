@@ -1,21 +1,31 @@
 using UnityEngine;
+using System.Collections;
 
-public class Repairable : MonoBehaviour, IJanitorInteractable
+public class Repairable : MonoBehaviour, IInteractable
 {
     [Header("Repair Settings")]
     public int resourceCost = 25;
     public float comfortGain = 18f;
 
     [Header("Visual Replacement (Optional)")]
-    public GameObject repairedPrefab;        //repaired object version
+    public GameObject repairedPrefab;
 
     [Header("Repair Feedback")]
-    public float repairDelay = 1.2f;         //small delay, can add sound or dust effects during this delay
+    public float repairDelay = 1.2f;
 
-    public void Interact(JanitorController janitor)
+    public void Interact(RoleType role)
     {
-        //spend money for repairs
-        if (GameManager.Instance.SpendResources(resourceCost))
+        // Only Janitor can repair
+        if (role != RoleType.Janitor)
+        {
+            Debug.Log("Only a Janitor can repair this!");
+            return;
+        }
+
+        // Spend money using your new system
+        bool success = HospitalStatsManager.Instance.SpendMoney(resourceCost);
+
+        if (success)
         {
             StartCoroutine(DoRepair());
         }
@@ -25,14 +35,14 @@ public class Repairable : MonoBehaviour, IJanitorInteractable
         }
     }
 
-    private System.Collections.IEnumerator DoRepair()
+    private IEnumerator DoRepair()
     {
-        //can add sound or particle effects here
+        // Optional: play animation / sound here
 
         yield return new WaitForSeconds(repairDelay);
 
-        //increase comfort percentage
-        GameManager.Instance.ModifyComfort(comfortGain);
+        // Increase comfort stat
+        HospitalStatsManager.Instance.ChangeComfort(comfortGain);
 
         Debug.Log("Repair completed! +" + comfortGain + " Comfort");
 
@@ -43,11 +53,9 @@ public class Repairable : MonoBehaviour, IJanitorInteractable
     {
         if (repairedPrefab != null)
         {
-            //spawn repaired object prefab at same position and rotation
             Instantiate(repairedPrefab, transform.position, transform.rotation);
         }
 
-        //destroy broken version
         Destroy(gameObject);
     }
 }

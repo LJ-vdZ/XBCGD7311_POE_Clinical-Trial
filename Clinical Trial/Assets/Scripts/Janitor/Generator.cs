@@ -1,12 +1,19 @@
 using UnityEngine;
 
-public class Generator : MonoBehaviour, IJanitorInteractable
+public class Generator : MonoBehaviour, IInteractable
 {
-    public void Interact(JanitorController janitor)
+    public void Interact(RoleType role)
     {
-        if (GameManager.Instance.isPowerOut)
+        // Only Janitor can use generator
+        if (role != RoleType.Janitor)
         {
-            // Safe check before starting puzzle
+            Debug.Log("Only a Janitor can fix the generator!");
+            return;
+        }
+
+        // Check if power is out
+        if (GameManager.Instance != null && GameManager.Instance.isPowerOut)
+        {
             if (GeneratorPuzzleManager.Instance != null)
             {
                 GeneratorPuzzleManager.Instance.StartPuzzle(this);
@@ -14,7 +21,7 @@ public class Generator : MonoBehaviour, IJanitorInteractable
             }
             else
             {
-                Debug.LogError("GeneratorPuzzleManager.Instance is null! Make sure the script is attached to the GeneratorPuzzleUI Canvas.");
+                Debug.LogError("GeneratorPuzzleManager not found in scene!");
             }
         }
         else
@@ -23,11 +30,20 @@ public class Generator : MonoBehaviour, IJanitorInteractable
         }
     }
 
-    //Called when puzzle is solved
+    // Called when puzzle is solved
     public void CompletePuzzle()
     {
         Debug.Log("Generator puzzle completed successfully!");
-        
-        //can add particles or sound here
+
+        // Turn power back on
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.isPowerOut = false;
+        }
+
+        // Optional: reward player
+        HospitalStatsManager.Instance.ChangeMorale(+10);
+
+        // Optional: play sound / particles here
     }
 }
